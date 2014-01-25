@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+<link href="bower_components/normalize-css/normalize.css">
+<style type="text/css">
+	body, input {
+		
+	}
+	.question, .answer {
+		height: 50%;
+		text-align: center;
+	}
+	.title, .location, .answer {
+		font: 24px "Helvetica Neue", Helvetica, sans-serif;
+	}
+	.location {
+		padding: 4px 8px;
+		text-align: center;
+	}
+</style>
+</head>
+<body>
+
+<form class="question">
+	<div>
+		<h1 class="title">Can I work remotely for a company in <input id="location" class="location" type="text" value="Los Angeles, California"> ?</h1>
+		<input type="submit">
+	</div>
+</form>
+
+<output class="answer"></output>
+<script>
+	(function($) {
+		var utc = new Date().getTimezoneOffset(),
+			locationURL = 'https://maps.googleapis.com/maps/api/geocode/json',
+			timezoneURL = 'https://maps.googleapis.com/maps/api/timezone/json',
+			timestamp = new Date().getTime()/1000;
+
+		$('.question').addEventListener('submit', function(e) {
+			e.preventDefault();
+			var location = $('.location').value;
+			ajax(locationURL + '?sensor=true&address=' + location, function(error, result) {
+				if (error || !result || !result.results || !result.results[0].geometry.location) {
+					$('.answer').innerHTML = 'Could not find location';
+				} else {
+					var lat = result.results[0].geometry.location.lat,
+						lng = result.results[0].geometry.location.lng;
+					ajax(timezoneURL + '?sensor=true&timestamp=' + timestamp + '&location=' + lat + ',' + lng, function(error, result) {
+						if (error || !result || !result.rawOffset) {
+							$('.answer').innerHTML = 'Could not get timezone';
+						} else {
+							$('.answer').innerHTML = result.rawOffset;
+						}
+					});
+				}
+			});
+		});
+
+		function ajax(url, callback) {
+			var req = new XMLHttpRequest();
+			req.onreadystatechange = function() {
+    			if (req.readyState !== 4 || req.status !== 200) {
+    				callback(true, false);
+    			} else {
+        			callback(null, JSON.parse(req.responseText));
+    			}
+    		}
+    		req.open('GET', url);
+    		req.send();
+    	}
+
+    	function calcOverlap(localUTC, remoteUTC) {
+
+    	}
+
+	})(document.querySelector.bind(document));
+</script>
+</body>
+</html>
