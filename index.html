@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-<link href="bower_components/normalize-css/normalize.css">
+<link href="node_modules/normalize-css/normalize.css">
 <style type="text/css">
 	body, input {
 		
@@ -34,22 +34,24 @@
 
 <form class="question">
 	<div>
-		<h1 class="title">Can I work remotely for a company in <input id="location" class="location" type="text" value="Los Angeles, California"> ?</h1>
+		<h1 class="title">Can I work remotely for a company in <input id="location" class="location" type="text" value="San Francisco, California"> ?</h1>
 		<input type="submit">
 	</div>
 </form>
 
 <output class="answer"></output>
+<script src="scripts/overlap.js"></script>
 <script>
 	(function($) {
-		var localUTC = new Date().getTimezoneOffset()/60 * -1, // convert to hours, and non-relative to UTC
+		var localUTC = new Date().getTimezoneOffset() * 60 * -1, // convert to seconds (* -1 to match expected offset, not what JS returns)
 			locationURL = 'https://maps.googleapis.com/maps/api/geocode/json',
 			timezoneURL = 'https://maps.googleapis.com/maps/api/timezone/json',
 			timestamp = new Date().getTime()/1000,
 			YES = 0,
 			YESBUT = 1,
 			NO = 2,
-			ERROR = -1;
+			ERROR = -1,
+			calcOverlap = overlap.calcOverlap;
 
 		$('.question').addEventListener('submit', function(e) {
 			e.preventDefault();
@@ -69,22 +71,24 @@
 						if (error || !result || !result.rawOffset) {
 							displayResult(ERROR, 'I couldn’t get the timezone of ' + location);
 						} else {
-
 							// Determine overlap and display results
-							var remoteUTC = result.rawOffset / 60 / 60; // Google maps API gives UTC in seconds
-							var overlap = calcOverlap(localUTC, remoteUTC);
-							if (overlap.NineToFive < 4) {
-								if (!overlap.extended || overlap.extended.overlap < 4) {
-									if (!overlap.extended) {
-										displayResult(NO, 'there is no overlap between the two timezones');
-									} else {
-										displayResult(NO, 'there is not enough overlap between the two timezones (' + overlap.extended.overlap + ' hours at most)');
-									}
+							var remoteUTC = result.rawOffset; // Google maps API gives UTC in seconds
+							var overlap = calcOverlap(remoteUTC, localUTC);
+console.log(overlap);
+							if (overlap.hours == 0) {
+								displayResult(NO, 'there is no overlap between the two timezones');
+							} else if (overlap.hours < 4) {
+								displayResult(NO, 'there is not enough overlap between the two timezones (' + overlap.hours + ' hours at min)');
+							} else if (overlap.extended) {
+								if (overlap.extended.saturday) {
+									displayResult(YESBUT, 'you’ll need to work Tuesday to Saturday');
+								} else if (overlap.extended.sunday) {
+									displayResult(YESBUT, 'you’ll need to work Sunday to Thursday');
 								} else {
-									displayResult(YESBUT, 'you’ll need to start your day at about ' + overlap.extended.start + ':00');
+									displayResult(YESBUT, 'you’ll need to start your day at about ' + overlap.extended.start + ':00');										
 								}
 							} else {
-								displayResult(YES, 'There is about ' + overlap.NineToFive + ' hours overlap between the two timezones');
+								displayResult(YES, 'There is about ' + overlap.hours + ' hours overlap between the two timezones');
 							}
 						}
 					});
@@ -105,64 +109,6 @@
     		}
     		req.open('GET', url);
     		req.send();
-    	}
-
-    	function calcOverlap(localUTC, remoteUTC) {
-			var overlapNineToFive = 0,
-				overlapEarly = 0,
-				overlapLate = 0,
-				overlapSunday = 0,
-				overlapSaturday = 0,
-				extraHours = [-3, -2, -1, 1, 2, 3];
-
-			// Assume head office (remoteUTC) overlap is only available 9-5
-			for (var hour = localUTC; hour <= localUTC + 8; hour++) {
-				if (hour > remoteUTC && hour <= remoteUTC + 8) {
-					overlapNineToFive++;
-				}
-
-				// Record how starting early or late affects overlap.
-				extraHours.forEach(function(extraHour, index) {
-					if (hour + extraHour > remoteUTC && hour <= remoteUTC + 8) {
-						if (extraHour < 0) {
-							overlapEarly = extraHour;							
-						} else {
-							overlapLate = extraHour;
-						}
-					}
-				});
-
-
-			}
-
-			// If 9-5 doesn't give us 4 or more hours, work out if we can start or finish early.
-			if (overlapNineToFive < 4) {
-				// Early start
-				if (overlapNineToFive + overlapEarly >= 4) {
-					return {
-						'NineToFive': overlapNineToFive,
-						'extended': {
-							'overlap': overlapNineToFive + overlapEarly,
-							'start': 9 + overlapEarly
-						}
-					}
-
-				// Late start/end
-				} else if (overlapNineToFive + overlapLate >= 4) {
-					return {
-						'NineToFive': overlapNineToFive,
-						'extended': {
-							'overlap': overlapNineToFive + overlapLate,
-							'start': 9 + overlapLate
-						}
-					}
-				}
-			}
-
-			// If starting early or ending late does give us 4 or more hours, try starting a day earlier or later.
-
-
-			return { 'NineToFive': overlapNineToFive };
     	}
 
     	function displayResult(result, message) {
