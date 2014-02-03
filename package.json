@@ -1,0 +1,14 @@
+{
+  "name": "caniworkremotely",
+  "version": "0.0.1",
+  "description": "Timezone overlap calculator for working remotely",
+  "main": "index.html",
+  "repository": "",
+  "author": "Daniel Nitsche",
+  "dependencies": {
+    "normalize-css": "~2.3.0"
+  },
+  "devDependencies": {
+    "mocha": "~1.17.1"
+  }
+}
