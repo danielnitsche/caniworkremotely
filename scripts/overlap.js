@@ -32,7 +32,8 @@
 		} else {
 			return { 
 				'hours': (overlap >= 0) ? overlap : 0,
-				'saturday': saturday
+				'saturday': saturday,
+				'sunday': true
 			};
 		}
 	};
