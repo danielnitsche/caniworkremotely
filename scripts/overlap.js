@@ -17,7 +17,7 @@
 		} else if (remoteOffsetHours <= 0 && remoteOffsetHours >= -maxOffsetHours) {
 			// Remote time is behind local time
 			overlap = 8 + remoteOffsetHours;
-		} else if (remoteOffsetHours >=0 && remoteOffsetHours > maxOffsetHours) {
+		} else if (remoteOffsetHours >= 0 && remoteOffsetHours > maxOffsetHours) {
 			// Remote time is a day ahead of local time.
 			overlap = 8 - (24 - remoteOffsetHours);
 			saturday = true;

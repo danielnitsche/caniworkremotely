@@ -13,6 +13,8 @@ describe('overlap', function() {
 		berlinUTCSeconds = 3600,
 		istanbulUTCSeconds = 7200,
 		nairobiUTCSeconds = 10800,
+		newDeliUTCSeconds = 19800,
+		bangkokUTCSeconds = 25200,
 		perthUTCSeconds = 28800,
 		darwinUTCSeconds = 34200,
 		melbourneUTCSeconds = 36000, // Note: non DST time.
@@ -70,6 +72,16 @@ describe('overlap', function() {
 
 	it('should return 1 hour when comparing Melbourne and Nairobi', function(done) {
 		assert.equal(overlap.calcOverlap(nairobiUTCSeconds, melbourneUTCSeconds).hours, 1);
+		done();
+	});
+
+	it('should return 3.5 hours when comparing Melbourne and New Deli', function(done) {
+		assert.equal(overlap.calcOverlap(newDeliUTCSeconds, melbourneUTCSeconds).hours, 3.5);
+		done();
+	});
+
+	it('should return 5 hours when comparing Melbourne and Bangkok', function(done) {
+		assert.equal(overlap.calcOverlap(bangkokUTCSeconds, melbourneUTCSeconds).hours, 5);
 		done();
 	});
 
