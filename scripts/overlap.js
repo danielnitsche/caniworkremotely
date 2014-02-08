@@ -1,28 +1,39 @@
 (function(exports){
 
-	// Daylight savings not currently considered
     exports.calcOverlap = function (remoteUTC, localUTC) {
 		var now = new Date().getTime(),
 			localTime = new Date(now + localUTC).getTime(),
 			remoteTime = new Date(now + remoteUTC).getTime(),
-			offsetHours = (remoteTime - localTime) / 60 / 60,
-			offsetHoursAbs = Math.abs(offsetHours);
+			remoteOffsetSeconds = localTime - remoteTime,
+			remoteOffsetHours = remoteOffsetSeconds / 60 / 60,
+			overlap = 0,
+			saturday = false,
+			sunday = false,
+			maxOffsetHours = 8 + 3; // +3 = 6am start or 8pm finish.
 
-		if (offsetHoursAbs <= 4) {
-			return { 'hours': 8 - offsetHoursAbs };
-		} else if (offsetHoursAbs >= 16) {
-			return {
-				'hours': Math.abs(15 - offsetHoursAbs),
-				'extended': {
-					'start': 9 + 15 - offsetHours,
-					'saturday': (offsetHours < 0),
-					'sunday': (offsetHours > 0)
-				}
-			};
-		} else if (offsetHoursAbs >= 5) {
-			return { 'hours': offsetHoursAbs };
+		if (remoteOffsetHours >= 0 && remoteOffsetHours <= maxOffsetHours) {
+			// Remote time ahead of local time.
+			overlap = 8 - remoteOffsetHours;
+		} else if (remoteOffsetHours <= 0 && remoteOffsetHours >= -maxOffsetHours) {
+			// Remote time is behind local time
+			overlap = 8 + remoteOffsetHours;
+		} else if (remoteOffsetHours >=0 && remoteOffsetHours > maxOffsetHours) {
+			// Remote time is a day ahead of local time.
+			overlap = 8 - (24 - remoteOffsetHours);
+			saturday = true;
+		} else if (remoteOffsetHours <= 0 && remoteOffsetHours < maxOffsetHours) {
+			// Remote time is a day behind of local time.
+			overlap = 8 - (24 + remoteOffsetHours);
+			sunday = true;
+		}
+
+		if (remoteUTC == localUTC) {
+			return { 'hours': 8 };
 		} else {
-			return { 'hours': offsetHoursAbs };
+			return { 
+				'hours': (overlap >= 0) ? overlap : 0,
+				'saturday': saturday
+			};
 		}
 	};
 

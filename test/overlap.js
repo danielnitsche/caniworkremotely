@@ -7,30 +7,69 @@ describe('overlap', function() {
 		sanFranciscoUTCSeconds = -28800,
 		chicagoUTCSeconds = -21600,
 		torontoUTCSeconds = -18000,
+		santiagoUTCSeconds = -14400,
+		riodejaneiroUTCSeconds = -10800,
+		londonUTCSeconds = 0,
+		berlinUTCSeconds = 3600,
+		istanbulUTCSeconds = 7200,
+		nairobiUTCSeconds = 10800,
 		perthUTCSeconds = 28800,
 		darwinUTCSeconds = 34200,
-		melbourneUTCSeconds = 36000,
+		melbourneUTCSeconds = 36000, // Note: non DST time.
 		sydneyUTCSeconds = 36000,
 		christchurchUTCSeconds = 43200;
 
-	it('should return 5 hours Tuesday - Saturday when comparing Melbourne and Honolulu', function(done) {
+	it('should return 4 hours Tuesday - Saturday when comparing Melbourne and Honolulu', function(done) {
 		var honoluluOverlap = overlap.calcOverlap(honoluluUTCSeconds, melbourneUTCSeconds);
-		assert.equal(honoluluOverlap.hours, 5);
-		assert.equal(honoluluOverlap.extended.saturday, true);
+		assert.equal(honoluluOverlap.hours, 4);
+		assert.equal(honoluluOverlap.saturday, true);
 		done();
 	});
 
-	it('should return 3 hours Tuesday - Saturday when comparing Melbourne and San Francisco', function(done) {
+	it('should return 2 hours Tuesday - Saturday when comparing Melbourne and San Francisco', function(done) {
 		var sanFranciscoOverlap = overlap.calcOverlap(sanFranciscoUTCSeconds, melbourneUTCSeconds);
-		assert.equal(sanFranciscoOverlap.hours, 3);
-		assert.equal(sanFranciscoOverlap.extended.saturday, true);
+		assert.equal(sanFranciscoOverlap.hours, 2);
+		assert.equal(sanFranciscoOverlap.saturday, true);
 		done();
 	});
 
-	it('should return 1 hour Tuesday - Saturday when comparing Melbourne and Chicago', function(done) {
-		var chicagoOverlap = overlap.calcOverlap(chicagoUTCSeconds, melbourneUTCSeconds);
-		assert.equal(chicagoOverlap.hours, 1);
-		assert.equal(chicagoOverlap.extended.saturday, true);
+	it('should return 0 hours when comparing Melbourne and Chicago', function(done) {
+		assert.equal(overlap.calcOverlap(chicagoUTCSeconds, melbourneUTCSeconds).hours, 0);
+		done();
+	});
+
+	it('should return 0 hours when comparing Melbourne and Toronto', function(done) {
+		assert.equal(overlap.calcOverlap(torontoUTCSeconds, melbourneUTCSeconds).hours, 0);
+		done();
+	});
+
+	it('should return 0 hours when comparing Melbourne and Santiago', function(done) {
+		assert.equal(overlap.calcOverlap(santiagoUTCSeconds, melbourneUTCSeconds).hours, 0);
+		done();
+	});
+
+	it('should return 0 hours when comparing Melbourne and Rio de Janeiro', function(done) {
+		assert.equal(overlap.calcOverlap(riodejaneiroUTCSeconds, melbourneUTCSeconds).hours, 0);
+		done();
+	});
+
+	it('should return 0 hours when comparing Melbourne and London', function(done) {
+		assert.equal(overlap.calcOverlap(londonUTCSeconds, melbourneUTCSeconds).hours, 0);
+		done();
+	});
+
+	it('should return 0 hours when comparing Melbourne and Berlin', function(done) {
+		assert.equal(overlap.calcOverlap(berlinUTCSeconds, melbourneUTCSeconds).hours, 0);
+		done();
+	});
+
+	it('should return 0 hours when comparing Melbourne and Istanbul', function(done) {
+		assert.equal(overlap.calcOverlap(istanbulUTCSeconds, melbourneUTCSeconds).hours, 0);
+		done();
+	});
+
+	it('should return 1 hour when comparing Melbourne and Nairobi', function(done) {
+		assert.equal(overlap.calcOverlap(nairobiUTCSeconds, melbourneUTCSeconds).hours, 1);
 		done();
 	});
 
