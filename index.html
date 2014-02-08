@@ -47,51 +47,39 @@
 			locationURL = 'https://maps.googleapis.com/maps/api/geocode/json',
 			timezoneURL = 'https://maps.googleapis.com/maps/api/timezone/json',
 			timestamp = new Date().getTime()/1000,
-			YES = 0,
-			YESBUT = 1,
-			NO = 2,
-			ERROR = -1,
 			calcOverlap = overlap.calcOverlap;
 
 		$('.question').addEventListener('submit', function(e) {
 			e.preventDefault();
-			var location = $('.location').value;
 			$('.answer').innerHTML = '';
+			var location = $('.location').value;
 
-			// Get lat and long from address
-			ajax(locationURL + '?sensor=true&address=' + location, function(error, result) {
-				if (error || !result || !result.results || !result.results[0].geometry.location) {
+			getRemoteUTC(location, function(remoteUTC) {
+				if (!remoteUTC) {
 					displayResult(ERROR, 'I couldn’t work out where ' + location + ' is');
 				} else {
-					var lat = result.results[0].geometry.location.lat,
-						lng = result.results[0].geometry.location.lng;
+					if (remoteUTC == localUTC) {
+						displayResult(YES, 'You’re in the same timezone');
+					} else {
+						// Determine overlap and display results
+						var overlap = calcOverlap(remoteUTC, localUTC);
 
-					// Get timezone from lat and long
-					ajax(timezoneURL + '?sensor=true&timestamp=' + timestamp + '&location=' + lat + ',' + lng, function(error, result) {
-						if (error || !result || !result.rawOffset) {
-							displayResult(ERROR, 'I couldn’t get the timezone of ' + location);
-						} else {
-							// Determine overlap and display results
-							var remoteUTC = result.rawOffset; // Google maps API gives UTC in seconds
-							var overlap = calcOverlap(remoteUTC, localUTC);
-console.log(overlap);
-							if (overlap.hours == 0) {
-								displayResult(NO, 'there is no overlap between the two timezones');
-							} else if (overlap.hours < 4) {
-								displayResult(NO, 'there is not enough overlap between the two timezones (' + overlap.hours + ' hours at min)');
-							} else if (overlap.extended) {
-								if (overlap.extended.saturday) {
-									displayResult(YESBUT, 'you’ll need to work Tuesday to Saturday');
-								} else if (overlap.extended.sunday) {
-									displayResult(YESBUT, 'you’ll need to work Sunday to Thursday');
-								} else {
-									displayResult(YESBUT, 'you’ll need to start your day at about ' + overlap.extended.start + ':00');										
-								}
+						if (overlap.hours == 0) {
+							display('No: there is no overlap between the two timezones.');
+						} else if (overlap.hours < 4) {
+							display('No: there is not enough overlap between the two timezones (' + overlap.hours + ' hours at min).');
+						} else if (overlap.extended) {
+							if (overlap.extended.saturday) {
+								display('Yes, but: you’ll need to work Tuesday to Saturday.');
+							} else if (overlap.extended.sunday) {
+								display('Yes, but: you’ll need to work Sunday to Thursday.');
 							} else {
-								displayResult(YES, 'There is about ' + overlap.hours + ' hours overlap between the two timezones');
+								display('Yes, but: you’ll need to start your day at about ' + overlap.extended.start + ':00.');
 							}
+						} else {
+							displayResult('Yes: yhere is about ' + overlap.hours + ' hours overlap between the two timezones.');
 						}
-					});
+					}
 				}
 			});
 		});
@@ -111,23 +99,28 @@ console.log(overlap);
     		req.send();
     	}
 
-    	function displayResult(result, message) {
-    		var output = '';
-    		switch (result) {
-    			case YES:
-    				output = 'Yes! ' + message;
-    				break;
-    			case YESBUT:
-    				output = 'Yes, but: ' + message;
-    				break;
-    			case NO:
-    				output = 'No: ' + message;
-    				break;
-    			case ERROR:
-    				output = 'I’m not sure: ' + message;
-    				break;
-    		}
-    		$('.answer').innerHTML = output;
+    	function display(message) {
+    		$('.answer').innerHTML = message;
+    	}
+
+    	function getRemoteUTC(location, callback) {
+			// Get lat and long from address
+			ajax(locationURL + '?sensor=true&address=' + location, function(error, result) {
+				if (error || !result || !result.results || !result.results[0].geometry.location) {
+					callback(false);
+				} else {
+					var lat = result.results[0].geometry.location.lat,
+						lng = result.results[0].geometry.location.lng;
+					// Get timezone from lat and long
+					ajax(timezoneURL + '?sensor=true&timestamp=' + timestamp + '&location=' + lat + ',' + lng, function(error, result) {
+						if (error || !result || !result.rawOffset) {
+							callback(false);
+						} else {
+							callback(result.rawOffset + result.dstOffset);
+						}
+					});
+				}
+			});
     	}
 
 	})(document.querySelector.bind(document));
