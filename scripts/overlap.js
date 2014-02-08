@@ -33,7 +33,7 @@
 			return { 
 				'hours': (overlap >= 0) ? overlap : 0,
 				'saturday': saturday,
-				'sunday': true
+				'sunday': sunday
 			};
 		}
 	};
