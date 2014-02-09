@@ -22,17 +22,19 @@ var assert = require('assert'),
 
 describe('Overlap with Melbourne', function() {
 
-	it('should be 4 hours Tuesday to Saturday for Honolulu', function(done) {
+	it('should be 4 hours Tuesday to Saturday for Honolulu, with a late finish option', function(done) {
 		var honoluluOverlap = overlap.calcOverlap(honoluluUTCSeconds, melbourneUTCSeconds);
 		assert.equal(honoluluOverlap.hours, 4);
-		assert.equal(honoluluOverlap.saturday, true);
+		assert.equal(honoluluOverlap.workOnSaturday, true);
+		assert.equal(honoluluOverlap.lateFinishIncreasesOverlap, true)
 		done();
 	});
 
-	it('should be 2 hours Tuesday to Saturday for San Francisco', function(done) {
+	it('should be 2 hours Tuesday to Saturday for San Francisco, with a late finish option', function(done) {
 		var sanFranciscoOverlap = overlap.calcOverlap(sanFranciscoUTCSeconds, melbourneUTCSeconds);
 		assert.equal(sanFranciscoOverlap.hours, 2);
-		assert.equal(sanFranciscoOverlap.saturday, true);
+		assert.equal(sanFranciscoOverlap.workOnSaturday, true);
+		assert.equal(sanFranciscoOverlap.lateFinishIncreasesOverlap, true)
 		done();
 	});
 
@@ -76,8 +78,10 @@ describe('Overlap with Melbourne', function() {
 		done();
 	});
 
-	it('should be 3.5 hours for New Deli', function(done) {
-		assert.equal(overlap.calcOverlap(newDeliUTCSeconds, melbourneUTCSeconds).hours, 3.5);
+	it('should be 3.5 hours for New Deli with an early start option', function(done) {
+		var newDeliOverlap = overlap.calcOverlap(newDeliUTCSeconds, melbourneUTCSeconds);
+		assert.equal(newDeliOverlap.hours, 3.5);
+		assert.equal(newDeliOverlap.earlyStartIncreasesOverlap, true);		
 		done();
 	});
 
@@ -113,14 +117,14 @@ describe('Overlap with San Francico', function() {
 	it('should be 2 hours Sunday to Thursday for Melbourne', function(done) {
 		var christchurchOverlap = overlap.calcOverlap(melbourneUTCSeconds, sanFranciscoUTCSeconds);
 		assert.equal(christchurchOverlap.hours, 2);
-		assert.equal(christchurchOverlap.sunday, true);
+		assert.equal(christchurchOverlap.workOnSunday, true);
 		done();
 	});
 
 	it('should be 4 hours Sunday to Thursday for Chirstchurch', function(done) {
 		var christchurchOverlap = overlap.calcOverlap(christchurchUTCSeconds, sanFranciscoUTCSeconds);
 		assert.equal(christchurchOverlap.hours, 4);
-		assert.equal(christchurchOverlap.sunday, true);
+		assert.equal(christchurchOverlap.workOnSunday, true);
 		done();
 	});
 
