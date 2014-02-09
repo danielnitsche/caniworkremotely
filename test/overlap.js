@@ -22,19 +22,19 @@ var assert = require('assert'),
 
 describe('Overlap with Melbourne', function() {
 
-	it('should be 4 hours Tuesday to Saturday for Honolulu, with a late finish option', function(done) {
+	it('should be 4 hours Tuesday to Saturday for Honolulu, with an early start option', function(done) {
 		var honoluluOverlap = overlap.calcOverlap(honoluluUTCSeconds, melbourneUTCSeconds);
 		assert.equal(honoluluOverlap.hours, 4);
 		assert.equal(honoluluOverlap.workOnSaturday, true);
-		assert.equal(honoluluOverlap.lateFinishIncreasesOverlap, true)
+		assert.equal(honoluluOverlap.earlyStartIncreasesOverlap, true)
 		done();
 	});
 
-	it('should be 2 hours Tuesday to Saturday for San Francisco, with a late finish option', function(done) {
+	it('should be 2 hours Tuesday to Saturday for San Francisco, with an early start option', function(done) {
 		var sanFranciscoOverlap = overlap.calcOverlap(sanFranciscoUTCSeconds, melbourneUTCSeconds);
 		assert.equal(sanFranciscoOverlap.hours, 2);
 		assert.equal(sanFranciscoOverlap.workOnSaturday, true);
-		assert.equal(sanFranciscoOverlap.lateFinishIncreasesOverlap, true)
+		assert.equal(sanFranciscoOverlap.earlyStartIncreasesOverlap, true)
 		done();
 	});
 
@@ -78,10 +78,10 @@ describe('Overlap with Melbourne', function() {
 		done();
 	});
 
-	it('should be 3.5 hours for New Deli with an early start option', function(done) {
+	it('should be 3.5 hours for New Deli with a late finish option', function(done) {
 		var newDeliOverlap = overlap.calcOverlap(newDeliUTCSeconds, melbourneUTCSeconds);
 		assert.equal(newDeliOverlap.hours, 3.5);
-		assert.equal(newDeliOverlap.earlyStartIncreasesOverlap, true);		
+		assert.equal(newDeliOverlap.lateFinishIncreasesOverlap, true);		
 		done();
 	});
 

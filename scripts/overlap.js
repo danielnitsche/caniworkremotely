@@ -16,23 +16,23 @@
 		// Remote time ahead of local time, and is within range for an overlap.
 		if (remoteOffsetHours >= 0 && remoteOffsetHours <= maxOffsetHours) {
 			overlap = 8 - remoteOffsetHours;
-			lateFinishIncreasesOverlap = true;
+			earlyStartIncreasesOverlap = true;
 
 		// Remote time is behind local time, and is within range for an overlap.			
 		} else if (remoteOffsetHours <= 0 && remoteOffsetHours >= -maxOffsetHours) {
 			overlap = 8 + remoteOffsetHours;
-			earlyStartIncreasesOverlap = true;
+			lateFinishIncreasesOverlap = true;
 
 		// Remote time is a day ahead local time.
 		} else if (remoteOffsetHours >= (24 - maxOffsetHours)) {
 			overlap = 8 - (24 - remoteOffsetHours);
-			earlyStartIncreasesOverlap = true;
+			lateFinishIncreasesOverlap = true;
 			workOnSunday = true;
 		
 		// Remote time is a day behind local time.			
 		} else if (remoteOffsetHours <= -1 * (24 - maxOffsetHours)) {
 			overlap = 8 - (24 + remoteOffsetHours);
-			lateFinishIncreasesOverlap = true;
+			earlyStartIncreasesOverlap = true;
 			workOnSaturday = true;
 		}
 
