@@ -4,19 +4,75 @@
 <meta charset="utf-8" />
 <link href="node_modules/normalize-css/normalize.css">
 <style type="text/css">
-	body, input {
-		
+	* {
+		box-sizing: border-box;
+	}
+	body, html {
+		background-color: black;
+		height: 100%;
+		padding: 0;
+		margin: 0;
+	}
+	.title {
+		margin: 0;
+		vertical-align: middle;
+	}
+	.question, .yesorno, .info {
+		padding: 0 1em;
+	}
+	.question, .info, .because {
+		padding: 1em;
 	}
 	.question, .answer {
-		height: 50%;
+		align-items: center;
+		color: white;
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		height: 25vh;
+		justify-content: center;
 		text-align: center;
+	}
+	.answer.on {
+		background-color: white;
+		color: black;
+		height: 75vh;
+	}
+	.yesorno {
+		align-items: center;
+		color: black;
+		display: flex;
+		height: 50vh;
+		justify-content: center;
+		font-size: 25vh;
+		text-align: center;
+		width: 100vw;
+	}
+	.but:after {
+		content: '*';
+	}
+	.info, .because {
+		align-items: center;
+		background-color: black;
+		color: white;
+		display: flex;
+		height: 25vh;
+		justify-content: center;
+		width: 100vw;
+	}
+	.info:after, .because {
+		content: '.';
 	}
 	.title, .location, .answer {
-		font: 24px "Helvetica Neue", Helvetica, sans-serif;
+		font: 26px "Helvetica Neue", Helvetica, sans-serif;
 	}
 	.location {
-		padding: 4px 8px;
+		background-color: rgba(255, 255, 255, .25);
+		border: 0;
+		color: white;
+		padding: .25em .5em;
 		text-align: center;
+		text-transform: capitalize;
 	}
 	input[type=submit] {
 		/* Visually hidden */
@@ -35,12 +91,14 @@
 
 <form class="question">
 	<div>
-		<h1 class="title">Can I work remotely for a company in <input id="location" class="location" type="text" value="San Francisco, California"> ?</h1>
+		<h1 class="title">Can you work remotely for a company headquartered in <input id="location" class="location" type="text" value="San Francisco, California"> ?</h1>
 		<input type="submit">
 	</div>
 </form>
 
-<output class="answer"></output>
+<output class="answer">
+<noscript>Sorry, you’ll need to enable JavaScript to find out.</noscript>
+</output>
 <script src="scripts/jquery.min.js"></script>
 <script src="scripts/overlap.js"></script>
 <script src="scripts/main.js"></script>

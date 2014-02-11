@@ -13,43 +13,43 @@
 
 		getRemoteUTC(location, function(remoteUTC) {
 			if (!remoteUTC) {
-				display('I’m not sure: I couldn’t work out where ' + location + ' is :(');
+				display('<span class="yesorno">I’m not sure</span> <span class="because">I couldn’t work out where <em>' + location + '</em> is :(</span>');
 			} else {
 				if (remoteUTC == localUTC) {
-					display('Yes: you’re in the same timezone.');
+					display('<span class="yesorno">Yes</span> <span class="because">You’re in the same timezone as the company headquarters</span>');
 				} else {
 					// Determine overlap and display results
 					var overlap = calcOverlap(remoteUTC, localUTC);
 
 					if (overlap.hours === 0) {
-						display('No: there is no overlap between the two timezones.');
+						display('<span class="yesorno">No</span> <span class="because">There is No overlap between the two timezones</span>');
 					} else if (overlap.hours >= 4) {
 						if (overlap.workOnSaturday) {
-							display('Yes, but: you’ll need to work Tuesday to Saturday.');
+							display('<span class="yesorno but">Yes</span> <span class="info">But you’ll need to work Tuesday to Saturday</span>');
 						} else if (overlap.workOnSunday) {
-							display('Yes, but: you’ll need to work Sunday to Thursday.');
+							display('<span class="yesorno but">Yes</span> <span class="info">But you’ll need to work Sunday to Thursday</span>');
 						} else {
-							display('Yes: there is about ' + overlap.hours + ' hours overlap between the two timezones.');
+							display('<span class="yesorno but">Yes</span> <span class="because">There is about ' + overlap.hours + ' hours overlap between the two timezones</span>');
 						}
 					} else if (overlap.hours < 4) {
 						if (overlap.earlyStartIncreasesOverlap) {
 							if (overlap.workOnSaturday) {
-								display('Yes, but: you’ll need to work Tuesday to Saturday, and you’ll need to shift your working day a couple of hours earlier.');
+								display('<span class="yesorno but">Yes</span> <span class="info">But you’ll need to work Tuesday to Saturday, and you’ll need to shift your working day a couple of hours earlier</span>');
 							} else if (overlap.workOnSunday) {
-								display('Yes, but: you’ll need to work Sunday to Thursday, and you’ll need to shift your working day a couple of hours earlier.');
+								display('<span class="yesorno but">Yes</span> <span class="info">But you’ll need to work Sunday to Thursday, and you’ll need to shift your working day a couple of hours earlier</span>');
 							} else {
-								display('Yes, but: you’ll need to shift your working day a couple of hours earlier.');
+								display('<span class="yesorno but">Yes</span> <span class="info">But you’ll need to shift your working day a couple of hours earlier</span>');
 							}
 						} else if (overlap.lateFinishIncreasesOverlap) {
 							if (overlap.workOnSaturday) {
-								display('Yes, but: you’ll need to work Tuesday to Saturday, and you’ll need shift your working day a couple of hours later.');
+								display('<span class="yesorno but">Yes</span> <span class="info">But you’ll need to work Tuesday to Saturday, and you’ll need shift your working day a couple of hours later</span>');
 							} else if (overlap.workOnSunday) {
-								display('Yes, but: you’ll need to work Sunday to Thurdsay, and you’ll need shift your working day a couple of hours later.');
+								display('<span class="yesorno but">Yes</span> <span class="info">But you’ll need to work Sunday to Thurdsay, and you’ll need shift your working day a couple of hours later</span>');
 							} else {
-								display('Yes, but: you’ll need shift your working day a couple of hours later.');
+								display('<span class="yesorno but">Yes</span> <span class="info">But you’ll need shift your working day a couple of hours later</span>');
 							}
 						} else {
-							display('No: there is not enough overlap between the two timezones (' + overlap.hours + ' hours at min).');
+							display('No <span class="because">There is not enough overlap between the two timezones (' + overlap.hours + ' hours at min)</span>');
 						}
 					}
 				}
@@ -71,6 +71,7 @@
 
 	function display(message) {
 		$('.answer').innerHTML = message;
+		$('.answer').className = 'answer on';
 	}
 
 	function getRemoteUTC(location, callback) {
