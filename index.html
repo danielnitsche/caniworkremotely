@@ -9,67 +9,37 @@
 	}
 	body, html {
 		background-color: black;
+		color: white;
 		height: 100%;
 		padding: 0;
 		margin: 0;
 	}
-	.title {
-		margin: 0;
-		vertical-align: middle;
+	body, input {
+		font-family: "Helvetica Neue", Helvetica, sans-serif;
 	}
-	.question, .yesorno, .info {
-		padding: 0 1em;
+	body {
+		/* https://secure.flickr.com/photos/traverseearth/7587035372/sizes/k/ */
+		background: url('shack.jpg') bottom left no-repeat;
+		background-size: cover;
 	}
-	.question, .info, .because {
-		padding: 1em;
-	}
-	.question, .answer {
-		align-items: center;
-		color: white;
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		height: 25vh;
-		justify-content: center;
-		text-align: center;
-	}
-	.answer.on {
-		background-color: white;
-		color: black;
-		height: 75vh;
-	}
-	.yesorno {
-		align-items: center;
-		color: black;
-		display: flex;
-		height: 50vh;
-		justify-content: center;
-		font-size: 25vh;
-		text-align: center;
-		width: 100vw;
-	}
-	.but:after {
-		content: '*';
-	}
-	.info, .because {
+	.question {
 		align-items: center;
 		background-color: black;
-		color: white;
 		display: flex;
-		height: 25vh;
+		height: 100%;
 		justify-content: center;
-		width: 100vw;
+		padding: 1em;
+		text-align: center;
 	}
-	.info:after, .because {
-		content: '.';
-	}
-	.title, .location, .answer {
-		font: 26px "Helvetica Neue", Helvetica, sans-serif;
+	.title, .location {
+		font-size: 30px;
+		font-weight: normal;
 	}
 	.location {
 		background-color: rgba(255, 255, 255, .25);
 		border: 0;
 		color: white;
+		min-width: 12.5em;
 		padding: .25em .5em;
 		text-align: center;
 		text-transform: capitalize;
@@ -85,6 +55,48 @@
 		position: absolute;
 		width: 1px;
 	}
+
+	.yesorno, .because, .info {
+		color: transparent;
+	}
+
+	.yesorno {
+		text-transform: lowercase;
+	}
+
+	.elapsed-1 .yesorno, .elapsed-1 .because, .elapsed-1 .info {
+		text-shadow: 5px 2px rgba(0, 0, 0, .5);
+		color: white;
+	}
+
+	.answering .question, .answered .question {
+		height: 10%;
+		transition: height 1s ease;
+	}
+
+	.answered .question {
+		transition: height 0s linear;
+	}
+
+	.answered .yesorno, .answered .because, .answered .info {
+		align-items: center;
+		display: flex;
+		font-size: 120px;
+		height: 80%;
+		justify-content: center;
+		width: 100%;
+	}
+
+	.but:after {
+		content: '*';
+	}
+
+	.answered .because, .answered .info {
+		background-color: black;
+		font-size: 30px;
+		height: 10%;
+	}
+
 </style>
 </head>
 <body>
