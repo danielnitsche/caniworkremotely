@@ -9,7 +9,7 @@
 	* {
 		box-sizing: border-box;
 		color: white;
-		font: 30px "Helvetica Neue", Helvetica, sans-serif;
+		font: 16px "Helvetica Neue", Helvetica, sans-serif;
 		font-weight: normal;
 		line-height: 1.5;
 		/* Lazy reset */
@@ -18,18 +18,15 @@
 	}
 
 	body, html {
-		height: 100%;
-	}
-
-	body {
-		/* https://secure.flickr.com/photos/traverseearth/7587035372/sizes/k/ */
-		background: url('shack.jpg') bottom left no-repeat;
+		background-position: bottom ;
+		background-repeat: no-repeat;
 		background-size: cover;
+		height: 100%;
 		position: relative;
 	}
 
 	.question, body:after, .location, .go {
-		background-color: rgba(0,0,0,.5);
+		background-color: rgba(0,0,0,.7);
 	}
 
 	.yesorno, .info, .because {
@@ -42,7 +39,7 @@
 	}
 
 	.highlight {
-		color: chocolate;
+		color: yellow;
 	}
 
 	/* INITIAL SCREEN */
@@ -70,7 +67,8 @@
 	}
 
 	.intro {
-		margin-bottom: 2vh;
+		margin-bottom: 4vh;
+		width: 100%;
 	}
 
 		.intro a {
@@ -81,6 +79,11 @@
 			.intro a:hover, .intro a:focus {
 				text-decoration: underline;
 			}
+
+		cite i {
+			color: #ccc;
+			font-style: italic;
+		}
 
 	.title {
 		align-items: center;
@@ -94,7 +97,7 @@
 			color: white;
 			margin: 0 .25rem;
 			min-width: 12rem;
-			padding: 0 .25rem;
+			padding: .25rem;
 			text-align: center;
 			text-transform: capitalize;
 			z-index: 1;
@@ -138,6 +141,7 @@
 		display: flex;
 		justify-content: center;
 		position: absolute;
+		text-align: center;
 		width: 100%;
 	}
 
@@ -149,6 +153,28 @@
 		bottom: 0;
 	}
 
+	/* SIZE SPECIFIC */
+	@media screen and (min-width: 20em) and (max-width: 40em) {
+		body { background-image: url('shack-medium.jpg'); }
+		.answering .question, .answered .question { top: -45vh; }
+		.title { flex-wrap: wrap; }
+		.title, .because, .info { height: 15vh; }
+		body.answering:after, body.answered:after { height: 15vh; }
+	}
+
+	@media screen and (min-width: 40em) {
+		* { font-size: 20px; }
+		body { background-image: url('shack.jpg'); }
+	}
+
+	@media screen and (min-width: 50em) {
+		* { font-size: 25px; }
+	}
+
+	@media screen and (min-width: 80em) {
+		* { font-size: 30px; }
+	}
+
 </style>
 </head>
 <body>
@@ -157,7 +183,7 @@
 	<div>
 		<blockquote class="intro">
 			“Working remotely, if it is to be successful, usually requires <em>some</em> overlap with the hours your coworkers are putting in &hellip; we’ve found that we need a good <span class="highlight">four hours of overlap</span> to avoid collaboration delays and feel like a team.”
-			<cite>&mdash; <a href="https://37signals.com/remote/"><i>Remote: Office Not Required</i></a></cite>
+			<cite>&mdash; <a href="https://37signals.com/remote/"><i>Remote:&nbsp;Office&nbsp;Not&nbsp;Required</i></a></cite>
 		</blockquote>
 		<h1 class="title">So, can you work remotely for a company headquartered in <input id="location" class="location" type="text" value="San Francisco, California"> <input class="go" type="submit" value="?"></h1>
 		
