@@ -16,41 +16,42 @@
 		}, 1000);
 
 		getRemoteUTC(location, function(remoteUTC) {
+			console.log(remoteUTC);
 			if (!remoteUTC) {
-				display('<span class="yesorno">I’m not sure :(</span> <span class="because">I couldn’t work out where “' + location + '” is</span>');
+				display('<span class="yesorno">I’m not sure :(</span> <span class="because">I couldn’t work out where that is</span>');
 			} else {
 				if (remoteUTC == localUTC) {
-					display('<span class="yesorno">Yes</span> <span class="because">You’re in the same timezone as the company headquarters</span>');
+					display('<span class="yesorno">Yes</span> <span class="because">you’re in the same timezone as the company headquarters</span>');
 				} else {
 					// Determine overlap and display results
 					var overlap = calcOverlap(remoteUTC, localUTC);
 
 					if (overlap.hours === 0) {
-						display('<span class="yesorno">No</span> <span class="because">There is No overlap between the two timezones</span>');
+						display('<span class="yesorno">No</span> <span class="because">there is no overlap between you and the company headquarters</span>');
 					} else if (overlap.hours >= 4) {
 						if (overlap.workOnSaturday) {
-							display('<span class="yesorno but">Yes</span> <span class="info">But you’ll need to work Tuesday to Saturday</span>');
+							display('<span class="yesorno but">Yes</span> <span class="info">if you work Tuesday to Saturday</span>');
 						} else if (overlap.workOnSunday) {
-							display('<span class="yesorno but">Yes</span> <span class="info">But you’ll need to work Sunday to Thursday</span>');
+							display('<span class="yesorno but">Yes</span> <span class="info">if you work Sunday to Thursday</span>');
 						} else {
-							display('<span class="yesorno but">Yes</span> <span class="because">There is about ' + overlap.hours + ' hours overlap between the two timezones</span>');
+							display('<span class="yesorno">Yes</span> <span class="because">there are four or more hours of overlap</span>');
 						}
 					} else if (overlap.hours < 4) {
 						if (overlap.earlyStartIncreasesOverlap) {
 							if (overlap.workOnSaturday) {
-								display('<span class="yesorno but">Yes</span> <span class="info">if you work Tuesday to Saturday, and you shift your working day a couple of hours earlier</span>');
+								display('<span class="yesorno but">Yes</span> <span class="info">if you work Tuesday to Saturday and shift your working day a couple of hours earlier</span>');
 							} else if (overlap.workOnSunday) {
-								display('<span class="yesorno but">Yes</span> <span class="info">But you’ll need to work Sunday to Thursday, and you’ll need to shift your working day a couple of hours earlier</span>');
+								display('<span class="yesorno but">Yes</span> <span class="info">if you work Sunday to Thursday and shift your working day a couple of hours earlier</span>');
 							} else {
-								display('<span class="yesorno but">Yes</span> <span class="info">But you’ll need to shift your working day a couple of hours earlier</span>');
+								display('<span class="yesorno but">Yes</span> <span class="info">if you shift your working day a couple of hours earlier</span>');
 							}
 						} else if (overlap.lateFinishIncreasesOverlap) {
 							if (overlap.workOnSaturday) {
-								display('<span class="yesorno but">Yes</span> <span class="info">But you’ll need to work Tuesday to Saturday, and you’ll need shift your working day a couple of hours later</span>');
+								display('<span class="yesorno but">Yes</span> <span class="info">if you work Tuesday to Saturday shift your working day a couple of hours later</span>');
 							} else if (overlap.workOnSunday) {
-								display('<span class="yesorno but">Yes</span> <span class="info">But you’ll need to work Sunday to Thurdsay, and you’ll need shift your working day a couple of hours later</span>');
+								display('<span class="yesorno but">Yes</span> <span class="info">if you work Sunday to Thurdsay and shift your working day a couple of hours later</span>');
 							} else {
-								display('<span class="yesorno but">Yes</span> <span class="info">But you’ll need shift your working day a couple of hours later</span>');
+								display('<span class="yesorno but">Yes</span> <span class="info">if you shift your working day a couple of hours later</span>');
 							}
 						} else {
 							display('No <span class="because">There is not enough overlap between the two timezones (' + overlap.hours + ' hours at min)</span>');
@@ -81,11 +82,13 @@
 	function getRemoteUTC(location, callback) {
 		// Get lat and long from address
 		ajax(locationURL + '?sensor=true&address=' + location, function(error, result) {
-			if (error || !result || !result.results || !result.results[0].geometry.location) {
+			if (error || !result || !result.results || !result.results[0] || !result.results[0].geometry.location) {
 				callback(false);
 			} else {
 				var lat = result.results[0].geometry.location.lat,
-					lng = result.results[0].geometry.location.lng;
+					lng = result.results[0].geometry.location.lng,
+					address = result.results[0].formatted_address;
+
 				// Get timezone from lat and long
 				ajax(timezoneURL + '?sensor=true&timestamp=' + timestamp + '&location=' + lat + ',' + lng, function(error, result) {
 					if (error || !result || !result.rawOffset) {

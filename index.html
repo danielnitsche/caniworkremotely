@@ -2,99 +2,130 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<link href="node_modules/normalize-css/normalize.css">
 <style type="text/css">
+
+	/* GLOBALS */
+
 	* {
 		box-sizing: border-box;
-	}
-	body, html {
-		background-color: black;
 		color: white;
-		height: 100%;
-		padding: 0;
+		font: 30px normal "Helvetica Neue", Helvetica, sans-serif;
+		line-height: 1.5;
+		/* Lazy reset */
 		margin: 0;
+		padding: 0;
 	}
-	body, input {
-		font-family: "Helvetica Neue", Helvetica, sans-serif;
+
+	body, html {
+		height: 100%;
 	}
+
 	body {
 		/* https://secure.flickr.com/photos/traverseearth/7587035372/sizes/k/ */
 		background: url('shack.jpg') bottom left no-repeat;
 		background-size: cover;
-	}
-	.question {
-		align-items: center;
-		background-color: black;
-		display: flex;
-		height: 100%;
-		justify-content: center;
-		padding: 1em;
-		text-align: center;
-	}
-	.title, .location {
-		font-size: 30px;
-		font-weight: normal;
-	}
-	.location {
-		background-color: rgba(255, 255, 255, .25);
-		border: 0;
-		color: white;
-		min-width: 12.5em;
-		padding: .25em .5em;
-		text-align: center;
-		text-transform: capitalize;
-	}
-	input[type=submit] {
-		/* Visually hidden */
-		border: 0;
-		clip: rect(0 0 0 0);
-		height: 1px;
-		margin: -1px;
-		overflow: hidden;
-		padding: 0;
-		position: absolute;
-		width: 1px;
+		position: relative;
 	}
 
-	.yesorno, .because, .info {
-		color: transparent;
+	.question, body:after, .location, .go , .info, .because {
+		background-color: rgba(0,0,0,.5);
 	}
 
-	.yesorno {
+	.yesorno, .info, .because {
 		text-transform: lowercase;
 	}
 
-	.elapsed-1 .yesorno, .elapsed-1 .because, .elapsed-1 .info {
-		text-shadow: 5px 2px rgba(0, 0, 0, .5);
-		color: white;
+	.title, .because, .info {
+		height: 2.5rem;
 	}
+
+	/* INITIAL SCREEN */
+
+	.question {
+		align-items: flex-end;
+		display: flex;
+		height: 15rem;
+		flex-wrap: wrap;
+		justify-content: center;
+		padding: 0 2rem;
+		position: relative;
+		text-align: center;
+		top: 0;
+		width: 100%;
+	}
+
+	.intro {
+		margin-bottom: 2rem;
+	}
+
+		.intro a {
+			color: #ccc;
+			text-decoration: none;
+		}
+
+			.intro a:hover, .intro a:focus {
+				text-decoration: underline;
+			}
+
+	.title {
+		align-items: center;
+		display: flex;
+		justify-content: center;
+		width: 100%;
+	}
+
+		.location, .go {
+			border: 0;
+			color: white;
+			margin: 0 .25rem;
+			min-width: 12rem;
+			padding: 0 .25rem;
+			text-align: center;
+			text-transform: capitalize;
+		}
+
+		.go {
+			min-width: 1.5em;
+		}
+
+	/* WHILE ANSWERING */
 
 	.answering .question, .answered .question {
-		height: 10%;
-		transition: height 1s ease;
+		margin-bottom: -12.5rem;
+		top: -12.5rem;
+		transition: top 1s ease;
 	}
 
-	.answered .question {
-		transition: height 0s linear;
+	/* ANSWERED */
+
+	.elapsed-1 .yesorno, .elapsed-1 .because, .elapsed-1 .info {
+		text-shadow: 5px 2px rgba(0, 0, 0, .5);
+	}
+
+	.highlight {
+		color: chocolate;
+	}
+
+	.yesorno {
+		height: 100%;
+		font-size: 120px;
+		top: 0;
 	}
 
 	.answered .yesorno, .answered .because, .answered .info {
 		align-items: center;
 		display: flex;
-		font-size: 120px;
-		height: 80%;
 		justify-content: center;
+		position: absolute;
 		width: 100%;
 	}
 
-	.but:after {
+	.but:after, .info:before {
 		content: '*';
 	}
 
 	.answered .because, .answered .info {
-		background-color: black;
-		font-size: 30px;
-		height: 10%;
+		bottom: 0;
 	}
 
 </style>
@@ -103,8 +134,12 @@
 
 <form class="question">
 	<div>
-		<h1 class="title">Can you work remotely for a company headquartered in <input id="location" class="location" type="text" value="San Francisco, California"> ?</h1>
-		<input type="submit">
+		<blockquote class="intro">
+			“Working remotely, if it is to be successful, usually requires <em>some</em> overlap with the hours your coworkers are putting in &hellip; we’ve found that we need a good <span class="highlight">four hours of overlap</span> to avoid collaboration delays and feel like a team.”
+			<cite>&mdash; <a href="https://37signals.com/remote/"><i>Remote: Office Not Required</i></a></cite>
+		</blockquote>
+		<h1 class="title">So, can you work remotely for a company headquartered in <input id="location" class="location" type="text" value="San Francisco, California"> <input class="go" type="submit" value="?"></h1>
+		
 	</div>
 </form>
 
