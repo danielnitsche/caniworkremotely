@@ -9,7 +9,8 @@
 	* {
 		box-sizing: border-box;
 		color: white;
-		font: 30px normal "Helvetica Neue", Helvetica, sans-serif;
+		font: 30px "Helvetica Neue", Helvetica, sans-serif;
+		font-weight: normal;
 		line-height: 1.5;
 		/* Lazy reset */
 		margin: 0;
@@ -27,7 +28,7 @@
 		position: relative;
 	}
 
-	.question, body:after, .location, .go , .info, .because {
+	.question, body:after, .location, .go {
 		background-color: rgba(0,0,0,.5);
 	}
 
@@ -36,7 +37,11 @@
 	}
 
 	.title, .because, .info {
-		height: 2.5rem;
+		height: 10vh;
+	}
+
+	.highlight {
+		color: chocolate;
 	}
 
 	/* INITIAL SCREEN */
@@ -44,18 +49,28 @@
 	.question {
 		align-items: flex-end;
 		display: flex;
-		height: 15rem;
+		height: 60vh;
 		flex-wrap: wrap;
 		justify-content: center;
-		padding: 0 2rem;
+		padding: 0 5vh;
 		position: relative;
 		text-align: center;
 		top: 0;
 		width: 100%;
 	}
 
+	body:after {
+		content: '';
+		bottom: 0;
+		display: block;
+		height: 40vh;
+		position: absolute;
+		width: 100vw;
+		z-index: -1;
+	}
+
 	.intro {
-		margin-bottom: 2rem;
+		margin-bottom: 2vh;
 	}
 
 		.intro a {
@@ -90,20 +105,23 @@
 
 	/* WHILE ANSWERING */
 
+	/* Middle to top */
 	.answering .question, .answered .question {
-		margin-bottom: -12.5rem;
-		top: -12.5rem;
+		margin-bottom: -10vh;
+		top: -50vh;
 		transition: top 1s ease;
+	}
+
+	/* Middle to bottom */
+	body.answering:after, body.answered:after {
+		height: 10vh;
+		transition: height 1s ease;
 	}
 
 	/* ANSWERED */
 
-	.elapsed-1 .yesorno, .elapsed-1 .because, .elapsed-1 .info {
-		text-shadow: 5px 2px rgba(0, 0, 0, .5);
-	}
-
-	.highlight {
-		color: chocolate;
+	.answer {
+ 		text-shadow: 5px 2px rgba(0, 0, 0, .5);
 	}
 
 	.yesorno {
