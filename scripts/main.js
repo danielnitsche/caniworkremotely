@@ -16,8 +16,7 @@
 		}, 1000);
 
 		getRemoteUTC(location, function(remoteUTC) {
-			console.log(remoteUTC);
-			if (!remoteUTC) {
+			if (remoteUTC === false) {
 				display('<span class="yesorno">I’m not sure :(</span> <span class="because">I couldn’t work out where that is</span>');
 			} else {
 				if (remoteUTC == localUTC) {
@@ -91,7 +90,7 @@
 
 				// Get timezone from lat and long
 				ajax(timezoneURL + '?sensor=true&timestamp=' + timestamp + '&location=' + lat + ',' + lng, function(error, result) {
-					if (error || !result || !result.rawOffset) {
+					if (error || !result || !result.hasOwnProperty('rawOffset')) {
 						callback(false);
 					} else {
 						callback(result.rawOffset + result.dstOffset);
