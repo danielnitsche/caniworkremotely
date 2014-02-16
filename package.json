@@ -5,9 +5,6 @@
   "main": "index.html",
   "repository": "",
   "author": "Daniel Nitsche",
-  "dependencies": {
-    "normalize-css": "~2.3.0"
-  },
   "devDependencies": {
     "mocha": "~1.17.1"
   }
