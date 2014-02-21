@@ -9,7 +9,6 @@
 	$('.question').addEventListener('submit', function(e) {
 		e.preventDefault();
 		$('body').className = 'answering';
-		$('.answer').innerHTML = '';
 		var location = $('.location').value;
 		setTimeout(function() {
 			$('body').className += ' elapsed-1'
@@ -17,43 +16,43 @@
 
 		getRemoteUTC(location, function(remoteUTC) {
 			if (remoteUTC === false) {
-				display('<span class="yesorno">I’m not sure :(</span> <span class="because">I couldn’t work out where that is</span>');
+				display('I’m not sure :(', 'I couldn’t work out where that is', false);
 			} else {
 				if (remoteUTC == localUTC) {
-					display('<span class="yesorno">Yes</span> <span class="because">you’re in the same timezone as the company headquarters</span>');
+					display('Yes', 'you’re in the same timezone as the company headquarters', false);
 				} else {
 					// Determine overlap and display results
 					var overlap = calcOverlap(remoteUTC, localUTC);
 
 					if (overlap.hours === 0) {
-						display('<span class="yesorno">No</span> <span class="because">there is no overlap between you and the company headquarters</span>');
+						display('No', 'there is no overlap between you and the company headquarters', false);
 					} else if (overlap.hours >= 4) {
 						if (overlap.workOnSaturday) {
-							display('<span class="yesorno but">Yes</span> <span class="info">if you work Tuesday to Saturday</span>');
+							display('Yes', 'if you work Tuesday to Saturday', true);
 						} else if (overlap.workOnSunday) {
-							display('<span class="yesorno but">Yes</span> <span class="info">if you work Sunday to Thursday</span>');
+							display('Yes', 'if you work Sunday to Thursday', true);
 						} else {
-							display('<span class="yesorno">Yes</span> <span class="because">there are four or more hours of overlap</span>');
+							display('Yes', 'there are four or more hours of overlap', false);
 						}
 					} else if (overlap.hours < 4) {
 						if (overlap.earlyStartIncreasesOverlap) {
 							if (overlap.workOnSaturday) {
-								display('<span class="yesorno but">Yes</span> <span class="info">if you work Tuesday to Saturday and shift your working day a couple of hours earlier</span>');
+								display('Yes', 'if you work Tuesday to Saturday and shift your working day a couple of hours earlier', true);
 							} else if (overlap.workOnSunday) {
-								display('<span class="yesorno but">Yes</span> <span class="info">if you work Sunday to Thursday and shift your working day a couple of hours earlier</span>');
+								display('Yes', 'if you work Sunday to Thursday and shift your working day a couple of hours earlier', false);
 							} else {
-								display('<span class="yesorno but">Yes</span> <span class="info">if you shift your working day a couple of hours earlier</span>');
+								display('Yes', 'if you shift your working day a couple of hours earlier', true);
 							}
 						} else if (overlap.lateFinishIncreasesOverlap) {
 							if (overlap.workOnSaturday) {
-								display('<span class="yesorno but">Yes</span> <span class="info">if you work Tuesday to Saturday shift your working day a couple of hours later</span>');
+								display('Yes', 'if you work Tuesday to Saturday shift your working day a couple of hours later', true);
 							} else if (overlap.workOnSunday) {
-								display('<span class="yesorno but">Yes</span> <span class="info">if you work Sunday to Thurdsay and shift your working day a couple of hours later</span>');
+								display('Yes', 'if you work Sunday to Thurdsay and shift your working day a couple of hours later', true);
 							} else {
-								display('<span class="yesorno but">Yes</span> <span class="info">if you shift your working day a couple of hours later</span>');
+								display('Yes', 'if you shift your working day a couple of hours later', true);
 							}
 						} else {
-							display('No <span class="because">There is not enough overlap between the two timezones (' + overlap.hours + ' hours at min)</span>');
+							display('No', 'There is not enough overlap between the two timezones (' + overlap.hours + ' hours at min)', false);
 						}
 					}
 				}
@@ -73,8 +72,15 @@
 		});
 	}
 
-	function display(message) {
-		$('.answer').innerHTML = message;
+	function display(yesorno, info, but) {
+		$('.yesorno').innerHTML = yesorno;
+		$('.info').innerHTML = info;
+
+		if (but) {
+			$('.yesorno').className += ' but';
+			$('.info').className += ' but';
+		}
+
 		$('body').className += ' answered';
 	}
 

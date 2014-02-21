@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style type="text/css">
 
 	/* GLOBALS */
@@ -18,6 +19,7 @@
 	}
 
 	body, html {
+		background-color: #333;
 		background-position: bottom ;
 		background-repeat: no-repeat;
 		background-size: cover;
@@ -25,16 +27,22 @@
 		position: relative;
 	}
 
-	.question, body:after, .location, .go {
+	body {
+		align-items: stretch;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.question, .info, .location, .go {
 		background-color: rgba(0,0,0,.7);
 	}
 
-	.yesorno, .info, .because {
+	.yesorno, .info {
 		text-transform: lowercase;
 	}
 
-	.title, .because, .info {
-		height: 10vh;
+	.title, .answering .info, .answered .info {
+		height: 6rem;
 		z-index: 1;
 	}
 
@@ -47,27 +55,24 @@
 	.question {
 		align-items: flex-end;
 		display: flex;
-		height: 60vh;
+		height: 20rem;
 		flex-wrap: wrap;
 		justify-content: center;
-		padding: 0 5vh;
+		margin-bottom: 0;
+		padding: 0 1rem;
 		position: relative;
 		text-align: center;
 		top: 0;
 		width: 100%;
 	}
 
-	body:after {
-		content: '';
-		bottom: 0;
-		display: block;
-		height: 40vh;
-		position: absolute;
-		width: 100vw;
+	.answer, .info {
+		display: flex;
+		flex: 1 0 auto;
 	}
 
 	.intro {
-		margin-bottom: 4vh;
+		margin-bottom: 1rem;
 		width: 100%;
 	}
 
@@ -88,6 +93,7 @@
 	.title {
 		align-items: center;
 		display: flex;
+		flex-flow: column nowrap;
 		justify-content: center;
 		width: 100%;
 	}
@@ -113,66 +119,73 @@
 
 	/* Middle to top */
 	.answering .question, .answered .question {
-		margin-bottom: -10vh;
-		top: -50vh;
+		top: -14rem;
 		transition: top 1s ease;
+	}
+	.answered .question {
+		margin-bottom: -14rem;
 	}
 
 	/* Middle to bottom */
-	body.answering:after, body.answered:after {
-		height: 10vh;
-		transition: height 1s ease;
+	.answering .answer, .answered .answer {
+		display: flex;
+		flex: 1 0 auto;
+		flex-direction: column;
+	}
+
+	.answering .info {
+		flex-grow: 0 0 auto;
+		height: 6rem;
+		transition: all 1s ease;
 	}
 
 	/* ANSWERED */
 
-	.answer {
+	.yesorno {
+		display: none;
+		flex: 0 0 auto;
+		font-size: 70px;
+		padding: 0 1rem;
  		text-shadow: 5px 2px rgba(0, 0, 0, .5);
 	}
 
-	.yesorno {
-		height: 100%;
-		font-size: 120px;
-		top: 0;
-	}
-
-	.answered .yesorno, .answered .because, .answered .info {
+	.answered .yesorno {
 		align-items: center;
 		display: flex;
+		flex: 1 0 auto;
 		justify-content: center;
-		position: absolute;
 		text-align: center;
 		width: 100%;
 	}
 
-	.but:after, .info:before {
+	.yesorno.but:after, .info.but:before {
 		content: '*';
 	}
 
-	.answered .because, .answered .info {
-		bottom: 0;
+	.info {
+		align-items: center;
+		display: flex;
+		justify-content: center;
 	}
 
 	/* SIZE SPECIFIC */
-	@media screen and (min-width: 20em) and (max-width: 40em) {
-		body { background-image: url('shack-medium.jpg'); }
-		.answering .question, .answered .question { top: -45vh; }
-		.title { flex-wrap: wrap; }
-		.title, .because, .info { height: 15vh; }
-		body.answering:after, body.answered:after { height: 15vh; }
-	}
-
 	@media screen and (min-width: 40em) {
 		* { font-size: 20px; }
 		body { background-image: url('shack.jpg'); }
+		.question { height: 15rem; }
+		.answering .question, .answered .question { top: -11rem; }
+		.answered .question { margin-bottom: -11rem; }
+		.title, .answering .info, .answered .info { height: 4rem; }
 	}
 
-	@media screen and (min-width: 50em) {
+	@media screen and (min-width: 55em) {
 		* { font-size: 25px; }
+		.yesorno { font-size: 100px; }
 	}
 
 	@media screen and (min-width: 80em) {
 		* { font-size: 30px; }
+		.yesorno { font-size: 150px; }
 	}
 
 </style>
@@ -185,13 +198,15 @@
 			“Working remotely, if it is to be successful, usually requires <em>some</em> overlap with the hours your coworkers are putting in &hellip; we’ve found that we need a good <span class="highlight">four hours of overlap</span> to avoid collaboration delays and feel like a team.”
 			<cite>&mdash; <a href="https://37signals.com/remote/"><i>Remote:&nbsp;Office&nbsp;Not&nbsp;Required</i></a></cite>
 		</blockquote>
-		<h1 class="title">So, can you work remotely for a company headquartered in <input id="location" class="location" type="text" value="San Francisco, California"> <input class="go" type="submit" value="?"></h1>
+		<h1 class="title">So, can you work remotely for a company headquartered in <span><input id="location" class="location" type="text" value="San Francisco, California"> <input class="go" type="submit" value="?"></span></h1>
 		
 	</div>
 </form>
 
 <output class="answer">
-<noscript>Sorry, you’ll need to enable JavaScript to find out.</noscript>
+	<noscript>Sorry, you’ll need to enable JavaScript to find out.</noscript>
+	<span class="yesorno"></span>
+	<span class="info"></span>
 </output>
 <script src="scripts/jquery.min.js"></script>
 <script src="scripts/overlap.js"></script>
