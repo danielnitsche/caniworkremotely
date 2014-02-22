@@ -10,9 +10,6 @@
 		e.preventDefault();
 		$('body').className = 'answering';
 		var location = $('.location').value;
-		setTimeout(function() {
-			$('body').className += ' elapsed-1'
-		}, 1000);
 
 		getRemoteUTC(location, function(remoteUTC) {
 			if (remoteUTC === false) {
@@ -72,12 +69,12 @@
 		});
 	}
 
-	function display(yesorno, info, but) {
-		$('.yesorno').innerHTML = yesorno;
+	function display(answer, info, but) {
+		$('.answer').innerHTML = answer;
 		$('.info').innerHTML = info;
 
 		if (but) {
-			$('.yesorno').className += ' but';
+			$('.answer').className += ' but';
 			$('.info').className += ' but';
 		}
 
