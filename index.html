@@ -54,7 +54,7 @@
 	}
 
 	.question, .info, .answer {
-		transition: all 1s ease
+		transition: flex 1s ease
 	}
 
 	/* INITIAL SCREEN */
@@ -97,6 +97,7 @@
 	.title {
 		align-items: center;
 		display: flex;
+		height: 6rem;
 		flex-flow: column nowrap;
 		justify-content: center;
 		text-align: center;
@@ -124,6 +125,7 @@
 		flex: 0 0 auto;
 		font-size: 80px;
 		text-indent: -9999em;
+		text-shadow: 5px 5px #333;
 	}
 
 	/* ANSWERED */
@@ -151,6 +153,7 @@
 	@media screen and (min-width: 30em) {
 		.title { height: 5rem; }
 		.answering .question, .answering .info { flex: 0 0 5rem; }
+		body { background-image: url('shack-medium.jpg'); }
 	}
 
 	@media screen and (min-width: 40em) {
@@ -163,9 +166,15 @@
 		.answer { font-size: 100px; }
 	}
 
+	@media screen and (min-width: 70em) {
+		* { font-size: 25px; }
+		.answer { font-size: 125px; }
+		.title { flex-direction: row; height: 3rem; }
+		.answering .question, .answering .info { flex: 0 0 3rem; }
+	}
+
 	@media screen and (min-width: 80em) {
 		* { font-size: 30px; }
-		.title { flex-direction: row; }
 		.answer { font-size: 150px; }
 	}
 
