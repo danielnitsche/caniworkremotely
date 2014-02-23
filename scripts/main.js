@@ -10,6 +10,9 @@
 		e.preventDefault();
 		$('body').className = 'answering';
 		var location = $('.location').value;
+		// Reset class names for second answer
+		$('.answer').className = 'answer';
+		$('.info').className = 'info';
 
 		getRemoteUTC(location, function(remoteUTC) {
 			if (remoteUTC === false) {

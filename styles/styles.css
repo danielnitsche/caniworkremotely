@@ -103,9 +103,10 @@ body {
 		margin: 0 .25rem;
 		min-width: 12rem;
 		padding: .25rem;
+		position: relative;
 		text-align: center;
 		text-transform: capitalize;
-		z-index: 1;
+		z-index: 2;
 	}
 
 	.go {
@@ -130,7 +131,7 @@ body {
 	flex: 0 0 auto;
 	font-size: 80px;
 	text-indent: -9999em;
-	text-shadow: 5px 5px #333;
+	text-shadow: 3px 3px #333;
 }
 
 /* ANSWERED */
@@ -142,6 +143,7 @@ body {
 	transition-property: height, margin-bottom, opacity;
 	transition-duration: 0s, .5s, .25s;
 	transition-delay: .25s, 0s, 0s;
+	z-index: -1;
 }
 
 .answering .question, .answering .info {
@@ -151,6 +153,16 @@ body {
 .answering .answer { 
 	flex: 1 0 auto;
 	text-indent: 0;
+}
+
+.answered .answer.but:after, .answered .info.but:before {
+	content: '*';
+}
+
+.answered .info.but:before {
+	font-size: 2rem;
+	height: 3rem;
+	padding-right: .25rem;
 }
 
 .answering .photo-credit {
