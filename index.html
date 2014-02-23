@@ -4,6 +4,7 @@
 <!-- https://github.com/danielnitsche/caniworkremotely -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Can I Work Remotely?</title>
 <style>
 
 /* GLOBALS */
@@ -164,6 +165,18 @@ body {
 		min-width: 1.5em;
 	}
 
+	.photo-credit {
+		bottom: 1rem;
+		display: block;
+		position: absolute;
+		right: 1rem;
+	}
+
+	.photo-credit, .photo-credit a {
+		opacity: .7;
+		font-size: .5rem;
+	}
+
 .answer {
 	-webkit-box-flex: 0;
 	-webkit-flex: 0 0 auto;
@@ -201,6 +214,10 @@ body {
 	-ms-flex: 1 0 auto; 
 	flex: 1 0 auto;
 	text-indent: 0;
+}
+
+.answering .photo-credit {
+	display: none;
 }
 
 /* SIZE SPECIFIC */
@@ -252,6 +269,8 @@ body {
 </output>
 
 <p class="info"></p>
+
+<p class="photo-credit"><a href="https://secure.flickr.com/photos/traverseearth/7587035372/">Photo</a> by <a href="https://secure.flickr.com/photos/traverseearth/">Johnny Peacock</a> / <a href="https://creativecommons.org/licenses/by-nc-nd/2.0/">CC BY-NC-ND</a></p>
 
 <script src="scripts/jquery.min.js"></script>
 <script src="scripts/overlap.js"></script>

@@ -114,6 +114,18 @@ body {
 		min-width: 1.5em;
 	}
 
+	.photo-credit {
+		bottom: 1rem;
+		display: block;
+		position: absolute;
+		right: 1rem;
+	}
+
+	.photo-credit, .photo-credit a {
+		opacity: .7;
+		font-size: .5rem;
+	}
+
 .answer {
 	flex: 0 0 auto;
 	font-size: 80px;
@@ -139,6 +151,10 @@ body {
 .answering .answer { 
 	flex: 1 0 auto;
 	text-indent: 0;
+}
+
+.answering .photo-credit {
+	display: none;
 }
 
 /* SIZE SPECIFIC */
