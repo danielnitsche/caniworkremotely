@@ -1,183 +1,237 @@
 <!doctype html>
 <html>
 <head>
+<!-- https://github.com/danielnitsche/caniworkremotely -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<style type="text/css">
+<style>
 
-	/* GLOBALS */
+/* GLOBALS */
 
-	* {
-		box-sizing: border-box;
+* {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	color: white;
+	font: 16px "Helvetica Neue", Helvetica, sans-serif;
+	font-weight: normal;
+	line-height: 1.5;
+	/* Lazy reset */
+	margin: 0;
+	padding: 0;
+}
+
+body, html {
+	background-color: #333;
+	background-position: bottom ;
+	background-repeat: no-repeat;
+	-webkit-background-size: cover;
+	background-size: cover;
+	height: 100%;
+	position: relative;
+}
+
+body {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-webkit-flex-direction: column;
+	-ms-flex-direction: column;
+	flex-direction: column;
+}
+
+.question, .info, .location, .go {
+	background-color: rgba(0,0,0,.7);
+}
+
+.answer, .info {
+	text-transform: lowercase;
+}
+
+.highlight {
+	color: yellow;
+}
+
+.question, .info, .answer {
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	-ms-flex-align: center;
+	align-items: center;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	padding: 0 1rem;
+	text-align: center;
+	width: 100%;
+}
+
+.question, .info, .answer {
+	-webkit-transition: -webkit-box-flex 1s ease;
+	-webkit-transition: -webkit-flex 1s ease;
+	transition: -webkit-box-flex 1s ease;
+	transition: -ms-flex 1s ease;
+	transition: flex 1s ease
+}
+
+/* INITIAL SCREEN */
+
+.question, .answer, .info {
+	-webkit-box-flex: 1;
+	-webkit-flex: 1 0 auto;
+	-ms-flex: 1 0 auto;
+	flex: 1 0 auto;
+	/* Required, otherwise content of .question affects height */
+	height: 0;
+}
+
+.question {
+	-webkit-box-align: end;
+	-webkit-align-items: flex-end;
+	-ms-flex-align: end;
+	align-items: flex-end;
+	-webkit-flex-wrap: wrap;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	margin-bottom: 0;
+	z-index: 2;
+}
+
+.intro {
+	/* Needed for transition to 0 later */
+	height: 100%;
+	margin-bottom: 1rem;
+	text-align: center;
+	width: 100%;
+}
+
+	.intro a {
+		color: #ccc;
+		text-decoration: none;
+	}
+
+		.intro a:hover, .intro a:focus {
+			text-decoration: underline;
+		}
+
+	cite i {
+		color: #ccc;
+		font-style: italic;
+	}
+
+.title {
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	-ms-flex-align: center;
+	align-items: center;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	height: 6rem;
+	-webkit-flex-flow: column nowrap;
+	-ms-flex-flow: column nowrap;
+	flex-flow: column nowrap;
+	-webkit-box-pack: center;
+	-webkit-justify-content: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	text-align: center;
+	width: 100%;
+}
+
+	.location, .go {
+		border: 0;
 		color: white;
-		font: 16px "Helvetica Neue", Helvetica, sans-serif;
-		font-weight: normal;
-		line-height: 1.5;
-		/* Lazy reset */
+		margin: 0 .25rem;
+		min-width: 12rem;
+		padding: .25rem;
+		text-align: center;
+		text-transform: capitalize;
+		z-index: 1;
+	}
+
+	.go {
+		font-size: 1rem;
 		margin: 0;
-		padding: 0;
+		min-width: 1.5em;
 	}
 
-	body, html {
-		background-color: #333;
-		background-position: bottom ;
-		background-repeat: no-repeat;
-		background-size: cover;
-		height: 100%;
-		position: relative;
-	}
+.answer {
+	-webkit-box-flex: 0;
+	-webkit-flex: 0 0 auto;
+	-ms-flex: 0 0 auto;
+	flex: 0 0 auto;
+	font-size: 80px;
+	text-indent: -9999em;
+	text-shadow: 5px 5px #333;
+}
 
-	body {
-		display: flex;
-		flex-direction: column;
-	}
+/* ANSWERED */
 
-	.question, .info, .location, .go {
-		background-color: rgba(0,0,0,.7);
-	}
+.answering .intro {
+	height: 0;
+	margin-bottom: 0;
+	opacity: 0;
+	-webkit-transition-property: height, margin-bottom, opacity;
+	transition-property: height, margin-bottom, opacity;
+	-webkit-transition-duration: 0s, .5s, .25s;
+	transition-duration: 0s, .5s, .25s;
+	-webkit-transition-delay: .25s, 0s, 0s;
+	transition-delay: .25s, 0s, 0s;
+}
 
-	.answer, .info {
-		text-transform: lowercase;
-	}
+.answering .question, .answering .info {
+	-webkit-box-flex: 0;
+	-webkit-flex: 0 0 6rem;
+	-ms-flex: 0 0 6rem;
+	flex: 0 0 6rem;
+}
 
-	.highlight {
-		color: yellow;
-	}
+.answering .answer { 
+	-webkit-box-flex: 1; 
+	-webkit-flex: 1 0 auto; 
+	-ms-flex: 1 0 auto; 
+	flex: 1 0 auto;
+	text-indent: 0;
+}
 
-	.question, .info, .answer {
-		align-items: center;
-		display: flex;
-		justify-content: center;
-		padding: 0 1rem;
-		text-align: center;
-		width: 100%;
-	}
+/* SIZE SPECIFIC */
 
-	.question, .info, .answer {
-		transition: flex 1s ease
-	}
+@media screen and (min-width: 30em) {
+	.title { height: 5rem; }
+	.answering .question, .answering .info { -webkit-box-flex: 0; -webkit-flex: 0 0 5rem; -ms-flex: 0 0 5rem; flex: 0 0 5rem; }
+	body { background-image: url('images/shack-medium.jpg'); }
+}
 
-	/* INITIAL SCREEN */
+@media screen and (min-width: 40em) {
+	* { font-size: 20px; }
+	body { background-image: url('images/shack.jpg'); }
+}
 
-	.question, .answer, .info {
-		flex: 1 0 auto;
-		/* Required, otherwise content of .question affects height */
-		height: 0;
-	}
+@media screen and (min-width: 55em) {
+	* { font-size: 25px; }
+	.answer { font-size: 100px; }
+}
 
-	.question {
-		align-items: flex-end;
-		flex-wrap: wrap;
-		margin-bottom: 0;
-		z-index: 2;
-	}
+@media screen and (min-width: 70em) {
+	* { font-size: 25px; }
+	.answer { font-size: 125px; }
+	.title { -webkit-box-orient: horizontal; -webkit-box-direction: normal; -webkit-flex-direction: row; -ms-flex-direction: row; flex-direction: row; height: 3rem; }
+	.answering .question, .answering .info { -webkit-box-flex: 0; -webkit-flex: 0 0 3rem; -ms-flex: 0 0 3rem; flex: 0 0 3rem; }
+}
 
-	.intro {
-		/* Needed for transition to 0 later */
-		height: 100%;
-		margin-bottom: 1rem;
-		text-align: center;
-		width: 100%;
-	}
-
-		.intro a {
-			color: #ccc;
-			text-decoration: none;
-		}
-
-			.intro a:hover, .intro a:focus {
-				text-decoration: underline;
-			}
-
-		cite i {
-			color: #ccc;
-			font-style: italic;
-		}
-
-	.title {
-		align-items: center;
-		display: flex;
-		height: 6rem;
-		flex-flow: column nowrap;
-		justify-content: center;
-		text-align: center;
-		width: 100%;
-	}
-
-		.location, .go {
-			border: 0;
-			color: white;
-			margin: 0 .25rem;
-			min-width: 12rem;
-			padding: .25rem;
-			text-align: center;
-			text-transform: capitalize;
-			z-index: 1;
-		}
-
-		.go {
-			font-size: 1rem;
-			margin: 0;
-			min-width: 1.5em;
-		}
-
-	.answer {
-		flex: 0 0 auto;
-		font-size: 80px;
-		text-indent: -9999em;
-		text-shadow: 5px 5px #333;
-	}
-
-	/* ANSWERED */
-
-	.answering .intro {
-		height: 0;
-		margin-bottom: 0;
-		opacity: 0;
-		transition-property: height, margin-bottom, opacity;
-		transition-duration: 0s, .5s, .25s;
-		transition-delay: .25s, 0s, 0s;
-	}
-
-	.answering .question, .answering .info {
-		flex: 0 0 6rem;
-	}
-
-	.answering .answer { 
-		flex: 1 0 auto;
-		text-indent: 0;
-	}
-
-	/* SIZE SPECIFIC */
-
-	@media screen and (min-width: 30em) {
-		.title { height: 5rem; }
-		.answering .question, .answering .info { flex: 0 0 5rem; }
-		body { background-image: url('shack-medium.jpg'); }
-	}
-
-	@media screen and (min-width: 40em) {
-		* { font-size: 20px; }
-		body { background-image: url('shack.jpg'); }
-	}
-
-	@media screen and (min-width: 55em) {
-		* { font-size: 25px; }
-		.answer { font-size: 100px; }
-	}
-
-	@media screen and (min-width: 70em) {
-		* { font-size: 25px; }
-		.answer { font-size: 125px; }
-		.title { flex-direction: row; height: 3rem; }
-		.answering .question, .answering .info { flex: 0 0 3rem; }
-	}
-
-	@media screen and (min-width: 80em) {
-		* { font-size: 30px; }
-		.answer { font-size: 150px; }
-	}
-
+@media screen and (min-width: 80em) {
+	* { font-size: 30px; }
+	.answer { font-size: 150px; }
+}
 </style>
 </head>
 <body>
