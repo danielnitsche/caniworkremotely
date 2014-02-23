@@ -1,0 +1,5 @@
+Makefile
+node_modules
+package.json
+styles
+test
